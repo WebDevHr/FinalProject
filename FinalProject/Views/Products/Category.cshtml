@@ -1,0 +1,27 @@
+﻿@model IEnumerable<FinalProject.Service.Models.Product>
+
+
+<div class="d-flex flex-wrap">
+    @foreach (var item in Model)
+    {
+        <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+            <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none; color: inherit;">
+                <div class="card m-2">
+                    <img src="@Html.DisplayFor(modelItem => item.Image)" class="card-img-top p-3" alt="..." style="height: 250px; object-fit: scale-down;">
+                    <div class="card-body">
+                        <h6 class="card-title" style="height: 60px;">@Html.DisplayFor(modelItem => item.Title)</h6>
+                        <div class="row">
+                            <div>
+                                <p class="card-text mb-0"><small class="text-muted">@Html.DisplayFor(modelItem => item.Category)</small></p>
+                                <p class="card-text"><small class="text-muted">Rating: @Html.DisplayFor(modelItem => item.Rating) / 5</small></p>
+                            </div>
+                            <div class="">
+                                <p class="card-text"><strong>@Html.DisplayFor(modelItem => item.Price) $</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>

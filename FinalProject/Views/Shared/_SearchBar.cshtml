@@ -1,0 +1,12 @@
+﻿@model FinalProject.Service.Models.Product
+
+<form asp-controller="Products" asp-action="Search" method="get" class="search-form">
+    <div class="input-group">
+        <input type="text" class="form-control rounded" name="query" value="@Model.Title" placeholder="Search...">
+        <div class="input-group-append" style="position:absolute; right:1px; top:1px;">
+            <button type="submit" class="btn bg-white text-black border-0" >
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>

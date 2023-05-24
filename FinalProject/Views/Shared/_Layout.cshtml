@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FinalProject</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FinalProject.styles.css" asp-append-version="true" />
+    <script src="https://kit.fontawesome.com/5f773bc09b.js" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+    <link rel="stylesheet" href="jquery.rateyo.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <div class="col-lg-4 d-flex ">
+                    <a class="navbar-brand d-lg-flex justify-content-lg-start" href="/">
+                        <div id="letterComponent">
+                            <span class="letter fw-bold">E</span>
+                            <span class="letter fw-bold">-</span>
+                            <span class="letter fw-bold">S</span>
+                            <span class="letter fw-bold">h</span>
+                            <span class="letter fw-bold">o</span>
+                            <span class="letter fw-bold">p</span>
+                        </div>
+                    </a>
+                    <div class="nav-item ">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Ürünler</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                    </div>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse col-lg-8" id="navbarNav">
+                    <form asp-action="Search" asp-controller="Products" method="get" class="d-flex justify-content-center align-items-cetner col-lg-8 form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2 search-input" type="search" placeholder="Search" aria-label="Search" name="query" autocomplete="off" />
+                        <div class="search-results dropdown-menu" style="top:50px;"></div>
+                        <button class="btn my-2 my-sm-0" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                    <ul class="navbar-nav ms-2 col-lg-4 d-lg-flex justify-content-end">
+                        <li class="nav-item align-self-center">
+                            <div class="dropdown text-dark">
+                                <button class="btn dropdown-toggle py-0" type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user me-1"></i> Giriş yap
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+                                    <li class="d-flex justify-content-center mb-2"><a class="dropdown-item nav-link text-dark d-flex justify-content-center border rounded" style="width:90%;" asp-area="" asp-controller="Home" asp-action="Login"><i class="fas fa-sign-in-alt me-2"></i>Giriş yap</a></li>
+                                    <li class="d-flex justify-content-center"><a class="dropdown-item nav-link text-dark d-flex justify-content-center border rounded" style="width:90%;" asp-area="" asp-controller="Home" asp-action="Signup"><i class="fas fa-user-plus me-2"></i>Kayıt ol</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item align-self-center">
+                            <div class="text-dark" asp-area="" asp-controller="Home" asp-action="Cart">
+                                <a href="/cart" class="btn text-black position-relative py-0">
+                                    <i class="fas fa-shopping-cart"></i> Sepetim 
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+                                            0
+                                        <span class="visually-hidden">unread messages</span>
+                                    </span>
+                                </a>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-top border-bottom">
+            <div class="container">
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Category" asp-route-id="Man">Erkek</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Category" asp-route-id="Woman">Kadin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Category" asp-route-id="Electronics">Elektronik</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Category" asp-route-id="Jewelery">Aksesuar</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        @using Microsoft.AspNetCore.Identity
+        @using FinalProject.Service.Models
+        @inject SignInManager<ApplicationUser> SignInManager
+        @inject UserManager<ApplicationUser> UserManager
+        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+            <ul class="navbar-nav flex-grow-1">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @User.Identity.Name!</a>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </header>
+    <div class="container mt-4">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - FinalProject - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/layout.js"></script>
+</body>
+</html>
