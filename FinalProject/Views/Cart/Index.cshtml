@@ -1,0 +1,48 @@
+﻿@model IEnumerable<FinalProject.Service.Models.CartViewModel>
+
+
+<h3 class="my-4">Septim (@await Component.InvokeAsync("CartCount") Ürün )</h3>
+
+@if(!Model.Any()) {
+    <h5 class="my-5 p-3">Sepette ürün yok!</h5>
+}else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    @foreach (var item in Model)
+                    {
+                        <div class="row mb-3 py-4">
+                            <div class="col-md-3">
+                                <img src="@item.Product.Image" class="img-fluid" alt="@item.Product.Title">
+                            </div>
+                            <div class="col-md-9">
+                                <h5 class="card-title">@item.Product.Title</h5>
+                                <p class="card-text">@item.Product.Description</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="DecreaseQuantity" asp-route-id="@item.Product.Id">-</a>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary text-black" disabled>@item.Quantity</button>
+                                        <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="IncreaseQuantity" asp-route-id="@item.Product.Id">+</a>
+                                    </div>
+                                    <a type="button" class="btn btn-sm btn-outline-danger px-3" asp-action="Delete" asp-route-id="@item.Product.Id">Sil</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Toplam</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@await Component.InvokeAsync("CartCount") Ürün</h6>
+                    <p class="card-text">Toplam tutar: @Model.Sum(item => item.Product.Price * item.Quantity) TL</p>
+                    <a href="#" class="btn btn-primary">Ödeme Yap</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

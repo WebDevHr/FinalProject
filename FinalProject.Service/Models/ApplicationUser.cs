@@ -6,5 +6,12 @@ namespace FinalProject.Service.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        [DisplayName("Ad")]
+        [Required(ErrorMessage = "Ad zorunludur")]
+        public string FirstName { get; set; } = string.Empty;
+        [DisplayName("Soyad")]
+        [Required(ErrorMessage = "Soyad zorunludur")]
+        public string LastName { get; set; } = string.Empty;
+
     }
 }

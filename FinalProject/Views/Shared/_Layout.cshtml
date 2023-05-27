@@ -18,17 +18,8 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
-                <div class="col-lg-4 d-flex ">
-                    <a class="navbar-brand d-lg-flex justify-content-lg-start" href="/">
-                        <div id="letterComponent">
-                            <span class="letter fw-bold">E</span>
-                            <span class="letter fw-bold">-</span>
-                            <span class="letter fw-bold">S</span>
-                            <span class="letter fw-bold">h</span>
-                            <span class="letter fw-bold">o</span>
-                            <span class="letter fw-bold">p</span>
-                        </div>
-                    </a>
+                <div class="col-lg-3 d-flex ">
+                    <partial name="_LogoPartial" />
                     <div class="nav-item ">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Ürünler</a>
                     </div>
@@ -39,39 +30,9 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse col-lg-8" id="navbarNav">
-                    <form asp-action="Search" asp-controller="Products" method="get" class="d-flex justify-content-center align-items-cetner col-lg-8 form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2 search-input" type="search" placeholder="Search" aria-label="Search" name="query" autocomplete="off" />
-                        <div class="search-results dropdown-menu" style="top:50px;"></div>
-                        <button class="btn my-2 my-sm-0" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
-                    <ul class="navbar-nav ms-2 col-lg-4 d-lg-flex justify-content-end">
-                        <li class="nav-item align-self-center">
-                            <div class="dropdown text-dark">
-                                <button class="btn dropdown-toggle py-0" type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user me-1"></i> Giriş yap
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
-                                    <li class="d-flex justify-content-center mb-2"><a class="dropdown-item nav-link text-dark d-flex justify-content-center border rounded" style="width:90%;" asp-area="" asp-controller="Home" asp-action="Login"><i class="fas fa-sign-in-alt me-2"></i>Giriş yap</a></li>
-                                    <li class="d-flex justify-content-center"><a class="dropdown-item nav-link text-dark d-flex justify-content-center border rounded" style="width:90%;" asp-area="" asp-controller="Home" asp-action="Signup"><i class="fas fa-user-plus me-2"></i>Kayıt ol</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item align-self-center">
-                            <div class="text-dark" asp-area="" asp-controller="Home" asp-action="Cart">
-                                <a href="/cart" class="btn text-black position-relative py-0">
-                                    <i class="fas fa-shopping-cart"></i> Sepetim 
-                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
-                                            0
-                                        <span class="visually-hidden">unread messages</span>
-                                    </span>
-                                </a>
-                            </div>
-
-                        </li>
-                    </ul>
+                <div class="collapse navbar-collapse col-lg-9" id="navbarNav">
+                    <partial name="_SearchMenu"/>
+                    <partial name="_RightMenu" />
                 </div>
             </div>
         </nav>
@@ -95,34 +56,6 @@
                 </div>
             </div>
         </nav>
-        @using Microsoft.AspNetCore.Identity
-        @using FinalProject.Service.Models
-        @inject SignInManager<ApplicationUser> SignInManager
-        @inject UserManager<ApplicationUser> UserManager
-        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-            <ul class="navbar-nav flex-grow-1">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @User.Identity.Name!</a>
-                    </li>
-                    <li class="nav-item">
-                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
-                            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                        </form>
-                    </li>
-                }
-                else
-                {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                    </li>
-                }
-            </ul>
-        </div>
     </header>
     <div class="container mt-4">
         <main role="main" class="pb-3">

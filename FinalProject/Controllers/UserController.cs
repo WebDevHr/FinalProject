@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FinalProject.Service.Models;
 using FinalProject.Service.Data;
 using FinalProject.Service.Core;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Controllers
 {
@@ -20,6 +20,7 @@ namespace FinalProject.Controllers
         {
             _userService = userService;
         }
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var users = await _userService.GetAllAsync();

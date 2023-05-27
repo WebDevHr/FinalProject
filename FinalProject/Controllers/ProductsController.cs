@@ -15,10 +15,14 @@ namespace FinalProject.Controllers
     public class ProductsController : Controller
     {
         private readonly ProductService _productService;
+        private readonly CartService _cartService;
 
-        public ProductsController(ProductService productService)
+
+        public ProductsController(ProductService productService, CartService cartService)
         {
             _productService = productService;
+            _cartService = cartService;
+
         }
 
         // GET: Products
@@ -36,13 +40,13 @@ namespace FinalProject.Controllers
             var products = await _productService.GetAll();
             if (products != null) { 
                 if(id == "Man")
-                    return View(products.FindAll(item => item.Category == "men's clothing"));
+                    return View(products.FindAll(item => item.Category == "Erkek"));
                 else if (id == "Woman")
-                    return View(products.FindAll(item => item.Category == "women's clothing"));
+                    return View(products.FindAll(item => item.Category == "Kadın"));
                 else if (id == "Jewelery")
-                    return View(products.FindAll(item => item.Category == "jewelery"));
+                    return View(products.FindAll(item => item.Category == "Mücevher"));
                 else if (id == "Electronics")
-                    return View(products.FindAll(item => item.Category == "electronics"));
+                    return View(products.FindAll(item => item.Category == "Elektronik"));
             } else
                 Problem("Entity set 'AppDBContext.Product'  is null.");
                 return RedirectToAction("Index");

@@ -1,7 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using FinalProject.Service.Models
+
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+
 <ul class="navbar-nav ms-2 col-lg-4 d-lg-flex justify-content-end">
     @if (SignInManager.IsSignedIn(User))
     {
@@ -24,10 +26,10 @@
         </li>
         <li class="nav-item align-self-center">
             <div class="text-dark" asp-area="" asp-controller="Home" asp-action="Cart">
-                <a href="/cart" class="btn text-black position-relative py-0">
+                <a class="btn text-black position-relative py-0" asp-area="" asp-controller="Cart" asp-action="Index">
                     <i class="fas fa-shopping-cart"></i> Sepetim
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
-                        0
+                        @await Component.InvokeAsync("CartCount")
                         <span class="visually-hidden">unread messages</span>
                     </span>
                 </a>

@@ -7,7 +7,7 @@ namespace FinalProject.Service.Data
     {
         public DbSet<User> Users { get; set; } = default!;
 
-        public DbSet<Product> Product { get; set; } = default!;
+        public DbSet<Product> Products { get; set; } = default!;
 
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {

@@ -10,16 +10,20 @@
             <img src="@Html.DisplayFor(model => model.Image)" class="img-fluid" alt="Product image" style="height: 250px; object-fit: scale-down;">
         </div>
         <div class="col-md-9 py-5">
-            <h2>@Html.DisplayFor(model => model.Title)</h2>
-            <p><strong>Category:</strong> @Html.DisplayFor(model => model.Category)</p>
-            <p><strong>Description:</strong> @Html.DisplayFor(model => model.Description)</p>
-            <p><strong>Price:</strong> @Html.DisplayFor(model => model.Price) $</p>
-            <p><strong>Rating:</strong> @Html.DisplayFor(model => model.Rating) / 5</p>
-            <p><strong>Count:</strong> @Html.DisplayFor(model => model.Count)</p>
+            <div>
+                <h2>@Html.DisplayFor(model => model.Title)</h2>
+                <p><strong>Category:</strong> @Html.DisplayFor(model => model.Category)</p>
+                <p><strong>Description:</strong> @Html.DisplayFor(model => model.Description)</p>
+                <p><strong>Price:</strong> @Html.DisplayFor(model => model.Price) TL</p>
+                <p><strong>Rating:</strong> @Html.DisplayFor(model => model.Rating) / 5</p>
+            </div>
+            <div>
+                <a class="btn btn-outline-secondary" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model?.Id">Sepete Ekle <i class="fas fa-cart-plus ms-1"></i></a>
+                <a class="btn btn-outline-secondary" asp-controller="Cart" asp-action="Index">Sepete Git <i class="fas fa-cart-shopping ms-1"></i></a>
+            </div>
         </div>
     </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-outline-secondary px-3 mt-3" asp-action="Index">Ürünlere Geri Git <i class="fas fa-rotate-left ms-1"></i></a>
 </div>
