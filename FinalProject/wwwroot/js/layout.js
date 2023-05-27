@@ -30,7 +30,7 @@ $(document).ready(function () {
 });
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.querySelector('.search-input');
-    const   = document.querySelector('.search-results');
+    const searchResults = document.querySelector('.search-results');
 
     searchInput.addEventListener('input', function () {
         if (searchInput.value.trim() === '') {

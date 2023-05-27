@@ -4,6 +4,23 @@
     ViewData["Title"] = "Details";
 }
 
+@if(TempData["success"] != null )
+{
+    @section Scripts {
+        <script>
+        toastr.success('@TempData["success"]');
+        </script>
+    }
+}
+else if (TempData["error"] != null)
+{
+    @section Scripts {
+    <script>
+        toastr.error('@TempData["error"]');
+    </script>
+    }
+}
+
 <div class="container">
     <div class="row border rounded px-5">
         <div class="col-md-3 text-md-start text-center py-5">
