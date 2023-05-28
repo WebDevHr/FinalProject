@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel;
 
 namespace FinalProject.Areas.Identity.Pages.Account
 {
@@ -75,19 +76,19 @@ namespace FinalProject.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Mail Adresi zorunludur")]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "Mail Adresi")]
             public string Email { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Şifre zorunludur")]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Şifre")]
             public string Password { get; set; }
 
             /// <summary>
@@ -95,9 +96,24 @@ namespace FinalProject.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = "Şifre Tekrarı")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "Ad zorunludur")]
+            [DisplayName("Ad")]
+            public string FirstName { get; set; }
+
+            [Required(ErrorMessage = "Soyad zorunludur")]
+            [DisplayName("Soyad")]
+            public string LastName { get; set; }
+
+
+            [Required(ErrorMessage = "Telefon numarası zorunludur")]
+            [DisplayName("Telefon Numarası")]
+            [Phone(ErrorMessage = "Geçersiz telefon numarası")]
+            public string PhoneNumber { get; set; }
+
         }
 
 
@@ -159,7 +175,11 @@ namespace FinalProject.Areas.Identity.Pages.Account
         {
             try
             {
-                return Activator.CreateInstance<ApplicationUser>();
+                var user = Activator.CreateInstance<ApplicationUser>();
+                user.FirstName = Input.FirstName; // Add this line
+                user.LastName = Input.LastName; // Add this line
+                user.PhoneNumber = Input.PhoneNumber; // Add this line
+                return user;
             }
             catch
             {

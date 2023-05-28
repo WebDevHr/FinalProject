@@ -10,9 +10,9 @@
     <script src="https://kit.fontawesome.com/5f773bc09b.js" crossorigin="anonymous"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+    
     <link rel="stylesheet" href="jquery.rateyo.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -20,12 +20,7 @@
             <div class="container">
                 <div class="col-lg-3 d-flex ">
                     <partial name="_LogoPartial" />
-                    <div class="nav-item ">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Ürünler</a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-                    </div>
+                    <partial name="_ProductsAndUsers" />
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -59,6 +54,14 @@
     </header>
     <div class="container mt-4">
         <main role="main" class="pb-3">
+            @if (TempData["success"] != null)
+            {
+                @section Scripts {
+                <script>
+                    toastr.success('@TempData["success"]');
+                </script>
+                }
+            }
             @RenderBody()
         </main>
     </div>
@@ -71,8 +74,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
     <script src="~/js/layout.js"></script>
 </body>
 </html>

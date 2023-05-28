@@ -89,5 +89,11 @@ namespace FinalProject.Service.Core
             _context.Carts.Remove(cart);
             await _context.SaveChangesAsync();
         }
+
+        public async Task AddAdmin(IdentityUserRole<string> userRole)
+        {
+            await _context.UserRoles.AddAsync(userRole);
+            await _context.SaveChangesAsync();
+        }
     }
 }

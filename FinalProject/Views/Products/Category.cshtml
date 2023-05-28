@@ -6,15 +6,15 @@
     {
         <div class="col-xl-3 col-lg-4 col-md-6 col-12">
             <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none; color: inherit;">
-                <div class="card m-2">
-                    <img src="@Html.DisplayFor(modelItem => item.Image)" class="card-img-top p-3" alt="..." style="height: 250px; object-fit: scale-down;">
+                <div class="card m-2" style="height: 420px;">
+                    <img src="@Html.DisplayFor(modelItem => item.Image)" class="card-img-top p-3" alt="@Html.DisplayFor(modelItem => item.Title)" style="height: 250px; object-fit: scale-down;">
                     <div class="card-body">
                         <h6 class="card-title" style="height: 50px;">@Html.DisplayFor(modelItem => item.Title)</h6>
+                        <div class="mb-2">
+                            <p class="card-text mb-0"><small class="text-muted">@Html.DisplayFor(modelItem => item.Category)</small></p>
+                        </div>
                         <div class="row">
-                            <div>
-                                <p class="card-text mb-0"><small class="text-muted">@Html.DisplayFor(modelItem => item.Category)</small></p>
-                                <p class="card-text"><small class="text-muted">Ortalama Puan: @Html.DisplayFor(modelItem => item.Rating) / 5</small></p>
-                            </div>
+                            <div id="rateYo_@item.Id" class="ms-1"></div>
                             <div class="">
                                 <p class="card-text"><strong>@Html.DisplayFor(modelItem => item.Price) TL</strong></p>
                             </div>
@@ -25,3 +25,21 @@
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        $(function () {
+        @foreach (var item in Model)
+        {
+            <text>
+                    $("#rateYo_@item.Id").rateYo({
+                        rating: @Html.DisplayFor(modelItem => item.Rating),
+                        starWidth: "15px",
+                        ratedFill: "#f5994b",
+                        readOnly: true
+                    });
+            </text>
+        }
+                        });
+    </script>
+}

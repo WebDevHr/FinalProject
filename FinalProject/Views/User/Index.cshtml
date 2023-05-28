@@ -1,4 +1,4 @@
-﻿@model List<FinalProject.Service.Models.User>
+﻿@model List<FinalProject.Service.Models.ApplicationUser>
 
 <div class="d-flex flex-wrap">
 @foreach(var item in Model) {
@@ -7,7 +7,7 @@
             <h5 class="card-title">@item.FirstName @item.LastName</h5>
             <h6 class="card-subtitle mb-2 text-muted">@item.Email</h6>
             <h6 class="card-subtitle mb-2 text-muted">@item.PhoneNumber</h6>
-            <h6 class="card-subtitle mb-2 text-muted">@item.Password</h6>
+            <h6 class="card-subtitle mb-2 text-muted">@item.PasswordHash</h6>
         </div>
     </div>
     }

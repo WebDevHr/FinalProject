@@ -4,13 +4,22 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+@{
+    string firstName = "";
+    if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+        firstName = user.FirstName;
+    }
+}
+
 <ul class="navbar-nav ms-2 col-lg-4 d-lg-flex justify-content-end">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item align-self-center">
             <div class="dropdown text-dark">
                 <button class="btn dropdown-toggle py-0" type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-user me-1"></i>@User.Identity.Name
+                    <i class="fas fa-user me-1"></i>@firstName
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
                     <li class="nav-item d-flex justify-content-center mb-1">

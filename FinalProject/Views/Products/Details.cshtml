@@ -4,21 +4,26 @@
     ViewData["Title"] = "Details";
 }
 
-@if(TempData["success"] != null )
-{
-    @section Scripts {
+@section Scripts {
+    @if (TempData["success"] != null)
+    {
         <script>
-        toastr.success('@TempData["success"]');
+            toastr.options.closeButton = true;
+            toastr.options.closeEasing = 'swing';
+            toastr.success('@TempData["success"]');
         </script>
     }
-}
-else if (TempData["error"] != null)
-{
-    @section Scripts {
+
     <script>
-        toastr.error('@TempData["error"]');
+        $(function () {
+            $("#rateYo").rateYo({
+                rating: @Html.DisplayFor(model => model.Rating),
+                starWidth: "25px",
+                ratedFill: "#f5994b",
+                readOnly: true
+            });
+        });
     </script>
-    }
 }
 
 <div class="container">
@@ -32,7 +37,7 @@ else if (TempData["error"] != null)
                 <p><strong>Category:</strong> @Html.DisplayFor(model => model.Category)</p>
                 <p><strong>Description:</strong> @Html.DisplayFor(model => model.Description)</p>
                 <p><strong>Price:</strong> @Html.DisplayFor(model => model.Price) TL</p>
-                <p><strong>Rating:</strong> @Html.DisplayFor(model => model.Rating) / 5</p>
+                <div id="rateYo" class="mb-4"></div>
             </div>
             <div>
                 <a class="btn btn-outline-secondary" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model?.Id">Sepete Ekle <i class="fas fa-cart-plus ms-1"></i></a>

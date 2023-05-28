@@ -16,15 +16,15 @@ namespace FinalProject.Controllers
     [Authorize]
     public class CartController : Controller
     {
-        private readonly ProductService _productService;
         private readonly CartService _cartService;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(ProductService productService, CartService cartService, UserManager<ApplicationUser> userManager)
+        public CartController(CartService cartService, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            _productService = productService;
             _cartService = cartService;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
         
         public async Task<IActionResult> Index()
@@ -44,6 +44,28 @@ namespace FinalProject.Controllers
                     Product = c.Product,
                     Quantity = c.Quantity
                 }).ToList();
+
+                //// Get the "Admin" role
+                //var role = await _roleManager.FindByNameAsync("Admin");
+
+                //// Check if the user is already in the "Admin" role
+                //var isInRole = await _userManager.IsInRoleAsync(user, "Admin");
+
+                //if (!isInRole)
+                //{
+                //    // Add the user to the "Admin" role
+                //    await _userManager.AddToRoleAsync(user, "Admin");
+
+                //    // Alternatively, you can add a new row to the AspNetUserRoles table
+                //    // to map the user to the "Admin" role
+                //    var userRole = new IdentityUserRole<string>
+                //    {
+                //        UserId = user.Id,
+                //        RoleId = role.Id
+                //    };
+                //    await _cartService.AddAdmin(userRole);
+                //}
+
                 return View(cartViewModels);
             }
             return View();
@@ -83,6 +105,8 @@ namespace FinalProject.Controllers
                     }
                     else
                         await _cartService.AddCart(cartItem);
+
+                    TempData["success"] = "Ürün Sepete Eklendli!";
                     
                 }
                 catch (ArgumentException ex)
@@ -93,8 +117,6 @@ namespace FinalProject.Controllers
             return RedirectToAction("Details", "Products", new { Id = productId });
         }
 
-        /////////
-        ///
         [HttpGet]
         public async Task<IActionResult> IncreaseQuantity(int id)
         {

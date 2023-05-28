@@ -12,14 +12,14 @@ namespace FinalProject.Service.Core
 {
     public class UserService
     {
-        private readonly AppDBContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public UserService(AppDBContext context)
+        public UserService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<List<User>> GetAllAsync()
+        public async Task<List<ApplicationUser>> GetAllAsync()
         {
             return await _context.Users.ToListAsync();
         }

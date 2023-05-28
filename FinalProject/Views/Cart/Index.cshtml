@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<FinalProject.Service.Models.CartViewModel>
 
-
 <h3 class="my-4">Septim (@await Component.InvokeAsync("CartCount") Ürün )</h3>
 
 @if(!Model.Any()) {
@@ -26,7 +25,25 @@
                                         <button type="button" class="btn btn-sm btn-outline-secondary text-black" disabled>@item.Quantity</button>
                                         <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="IncreaseQuantity" asp-route-id="@item.Product.Id">+</a>
                                     </div>
-                                    <a type="button" class="btn btn-sm btn-outline-danger px-3" asp-action="Delete" asp-route-id="@item.Product.Id">Sil</a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger px-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Sil</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Uyarı</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Ürün Sepetinizden Silinsin Mi?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Geri Dön</button>
+                                        <a type="button" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Product.Id">Silmek İstiyorum</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
