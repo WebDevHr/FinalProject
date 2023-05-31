@@ -8,6 +8,7 @@ using FinalProject.Areas;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using FinalProject.Areas.Identity.Pages.Account.Manage;
 using Microsoft.Extensions.DependencyInjection;
+using FinalProject.Filters;
 
 internal class Program
 {
@@ -16,7 +17,20 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddControllersWithViews(options =>
+        {
+            options.Filters.Add<IsAdminFilter>();
+        });
+
+        builder.Services.AddDistributedMemoryCache(); // Use in-memory cache for session storage
+        builder.Services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
+
+        
 
         // Add DbContext for Identity
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -33,15 +47,13 @@ internal class Program
 
         builder.Services.AddTransient<IEmailSender, DummyEmailSender>();
 
-        // Add your existing services
-        builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(
-                builder.Configuration.GetConnectionString("DefaultConnection")
-            ));
 
         builder.Services.AddScoped<ProductService>();
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<CartService>();
         // Replace the default UserClaimsPrincipalFactory with the custom one
+
+        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         var app = builder.Build();
 
@@ -52,6 +64,8 @@ internal class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+
+        app.UseSession();
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
@@ -76,7 +90,7 @@ internal class Program
             }
             catch (Exception ex)
             {
-                // Log the error if necessary
+                DirectoryNotFoundException directoryNotFoundException = new DirectoryNotFoundException(ex.Message);
             }
         }
 

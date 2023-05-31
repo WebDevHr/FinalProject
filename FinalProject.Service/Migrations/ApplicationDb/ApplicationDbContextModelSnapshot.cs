@@ -373,13 +373,13 @@ namespace FinalProject.Service.Migrations.ApplicationDb
             modelBuilder.Entity("FinalProject.Service.Models.Favorite", b =>
                 {
                     b.HasOne("FinalProject.Service.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("Favorites")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FinalProject.Service.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("Favorite")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -457,6 +457,16 @@ namespace FinalProject.Service.Migrations.ApplicationDb
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FinalProject.Service.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Favorites");
+                });
+
+            modelBuilder.Entity("FinalProject.Service.Models.Product", b =>
+                {
+                    b.Navigation("Favorite");
                 });
 #pragma warning restore 612, 618
         }

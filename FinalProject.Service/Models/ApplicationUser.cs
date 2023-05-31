@@ -13,5 +13,7 @@ namespace FinalProject.Service.Models
         [Required(ErrorMessage = "Soyad zorunludur")]
         public string LastName { get; set; } = string.Empty;
 
+        public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+
     }
 }

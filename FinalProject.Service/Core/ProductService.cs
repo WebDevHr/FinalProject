@@ -12,9 +12,9 @@ namespace FinalProject.Service.Core
 {
     public class ProductService
     {
-        private readonly AppDBContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ProductService(AppDBContext context)
+        public ProductService(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -14,5 +14,7 @@ namespace FinalProject.Service.Models
         public double Rating { get; set; }
         public int Count { get; set; } = 0;
 
+        public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+
     }
 }

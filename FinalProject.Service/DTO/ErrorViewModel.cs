@@ -1,3 +1,4 @@
+
 namespace FinalProject.Service.Models
 {
     public class ErrorViewModel
