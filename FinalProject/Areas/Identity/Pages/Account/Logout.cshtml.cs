@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
@@ -34,6 +34,7 @@ namespace FinalProject.Areas.Identity.Pages.Account
             if (returnUrl != null)
             {
                 _httpContextAccessor.HttpContext.Session.Remove("IsAdmin");
+                TempData["info"] = "Hesabınızdan Çıkış yaptınız!";
                 returnUrl ??= Url.Content("~/");
                 return LocalRedirect(returnUrl);
             }

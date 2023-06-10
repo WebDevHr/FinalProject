@@ -19,17 +19,43 @@ namespace FinalProject.Service.Core
             _context = context;
         }
 
-        public async Task<List<Product>> GetAll()
+        public async Task<List<ProductViewModel>> GetAll()
         {
-            return await _context.Products.Include(p => p.Favorites).ToListAsync(); ;
+            var products = await _context.Products.Include(p => p.Favorites).ToListAsync();
+            var productsViewModel = products.Select( c => new ProductViewModel 
+            { 
+                Id = c.Id,
+                Title = c.Title,
+                Price = c.Price,
+                Description = c.Description,
+                Category = c.Category,
+                Image = c.Image,
+                Rating = c.Rating,
+                Count = c.Count,
+                Favorites = c.Favorites,
+            }).ToList();
+            return productsViewModel;
         }
 
-        public async Task<List<Product>> GetSearch(string query)
+        public async Task<List<ProductViewModel>> GetSearch(string query)
         {
-            return await _context.Products.Where(p => p.Title.Contains(query)).ToListAsync();
+            var searchpProducts = await _context.Products.Where(p => p.Title.Contains(query)).ToListAsync();
+            var searchProductsViewModel = searchpProducts.Select(c => new ProductViewModel
+            {
+                Id = c.Id,
+                Title = c.Title,
+                Price = c.Price,
+                Description = c.Description,
+                Category = c.Category,
+                Image = c.Image,
+                Rating = c.Rating,
+                Count = c.Count,
+                Favorites = c.Favorites,
+            }).ToList();
+            return searchProductsViewModel;
         }
 
-        public async Task<Product?> GetById(int? id)
+        public async Task<ProductViewModel?> GetById(int? id)
         {
             var isProduct = ProductDbExist();
             if (!isProduct)
@@ -37,18 +63,51 @@ namespace FinalProject.Service.Core
 
             var product = await _context.Products
                 .FirstOrDefaultAsync(m => m.Id == id);
-            return product;
+            var productViewModel =  new ProductViewModel
+            {
+                Id = product.Id,
+                Title = product.Title,
+                Price = product.Price,
+                Description = product.Description,
+                Category = product.Category,
+                Image = product.Image,
+                Rating = product.Rating,
+                Count = product.Count,
+                Favorites = product.Favorites,
+            };
+            return productViewModel;
         }
 
-        public async Task CreateProduct(Product product)
+        public async Task CreateProduct(ProductViewModel productViewModel)
         {
+            var product = new Product
+            {
+                Title = productViewModel.Title,
+                Price = productViewModel.Price,
+                Description = productViewModel.Description,
+                Category = productViewModel.Category,
+                Image = productViewModel.Image,
+                Rating = productViewModel.Rating,
+                Count = productViewModel.Count,
+            };
             _context.Add(product);
             await _context.SaveChangesAsync();
         }
 
-        public async Task EditProduct(Product product)
+        public async Task EditProduct(ProductViewModel productViewModel)
         {
-
+            var product = new Product
+            {
+                Id = productViewModel.Id,
+                Title = productViewModel.Title,
+                Price = productViewModel.Price,
+                Description = productViewModel.Description,
+                Category = productViewModel.Category,
+                Image = productViewModel.Image,
+                Rating = productViewModel.Rating,
+                Count = productViewModel.Count,
+                Favorites= productViewModel.Favorites,
+            };
             _context.Update(product);
             await _context.SaveChangesAsync();
         }

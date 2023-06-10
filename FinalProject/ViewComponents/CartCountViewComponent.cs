@@ -5,26 +5,25 @@ using FinalProject.Service.Data;
 using FinalProject.Service.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using FinalProject.Service.Core;
 
 namespace FinalProject.ViewComponents
 {
     public class CartCountViewComponent : ViewComponent
     {
-        private readonly ApplicationDbContext _context;
+        private readonly CartService _cartService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartCountViewComponent(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CartCountViewComponent(CartService cartService, UserManager<ApplicationUser> userManager)
         {
-            _context = context;
+            _cartService = cartService;
             _userManager = userManager;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            var cartItemCount = await _context.Carts
-                .Where(c => c.ApplicationUserId == userId)
-                .SumAsync(c => c.Quantity);
+            var cartItemCount = await _cartService.CartCountAsync(userId);
 
             return View("Default", cartItemCount);
         }

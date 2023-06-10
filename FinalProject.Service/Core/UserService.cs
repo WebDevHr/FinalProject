@@ -23,5 +23,9 @@ namespace FinalProject.Service.Core
         {
             return await _context.Users.ToListAsync();
         }
+        public async Task<ApplicationUser> GetUserAsync(string userId)
+        {
+            return await _context.Users.FindAsync(int.Parse(userId));
+        }
     }
 }

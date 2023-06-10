@@ -1,14 +1,7 @@
 ﻿using FinalProject.Service.Data;
 using FinalProject.Service.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinalProject.Service.Core
 {
@@ -23,28 +16,38 @@ namespace FinalProject.Service.Core
             _userManager = userManager;
         }
 
-        public async Task<List<Favorite>> GetAll(string userId)
+        public async Task<List<FavoriteViewModel>> GetAll(string userId)
         {
             var favorites = await _context.Favorites
                 .Include(f => f.Product)
                 .Where(f => f.ApplicationUserId == userId)
                 .ToListAsync();
-            return favorites;
+            var favoriteViewModel = favorites.Select(c => new FavoriteViewModel 
+            { 
+                Product = c.Product
+            }).ToList();
+            return favoriteViewModel;
         }
 
-        public Favorite? GetFavorite(int productId, string userId)
+        public bool IsFavorite(int productId, string userId)
         {
-            return _context.Favorites.FirstOrDefault(f => f.ApplicationUserId == userId && f.ProductId == productId);
+            return _context.Favorites.FirstOrDefault(f => f.ApplicationUserId == userId && f.ProductId == productId) != null;
         }
 
-        public async Task AddFavorite(Favorite fav)
+        public async Task AddFavorite(int productId, string userId)
         {
-            _context.Favorites.Add(fav);
+            var favorite = new Favorite
+            {
+                ApplicationUserId = userId,
+                ProductId = productId
+            };
+            _context.Favorites.Add(favorite);
             await _context.SaveChangesAsync();
         }
-        public async Task RemoveFavorite(Favorite fav)
+        public async Task RemoveFavorite(int productId, string userId)
         {
-            _context.Favorites.Remove(fav);
+            var favorite = _context.Favorites.FirstOrDefault(f => f.ApplicationUserId == userId && f.ProductId == productId);
+            _context.Favorites.Remove(favorite);
             await _context.SaveChangesAsync();
         }
     }

@@ -25,28 +25,20 @@ namespace FinalProject.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
-            var favorites = await _favoriteService.GetAll(userId);
-            return View(favorites);
+            var favoriteViewModels = await _favoriteService.GetAll(userId);
+            return View(favoriteViewModels);
         }
         [Authorize]
         public async Task<IActionResult> ToggleFavorite(int productId)
         {
-            var user = await _userManager.GetUserAsync(User);
-            var favorite = _favoriteService.GetFavorite(productId, user.Id);
+            var userId = _userManager.GetUserId(User);
+            bool isFavorite = _favoriteService.IsFavorite(productId, userId);
 
-            if (favorite == null)
-            {
-                favorite = new Favorite
-                {
-                    ApplicationUserId = user.Id,
-                    ProductId = productId
-                };
-                await _favoriteService.AddFavorite(favorite);
-            }
+            if (!isFavorite)
+                await _favoriteService.AddFavorite(productId, userId);
             else
-            {
-                await _favoriteService.RemoveFavorite(favorite);
-            }
+                await _favoriteService.RemoveFavorite(productId, userId);
+            
 
             // Get the referrer URL and redirect back to the same page
             var referrerUrl = Request.Headers["Referer"].ToString();

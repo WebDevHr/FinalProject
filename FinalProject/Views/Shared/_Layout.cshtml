@@ -64,6 +64,10 @@
                 toastr.options.closeButton = true;
                 toastr.warning('@TempData["warning"]');
             }
+            else if ('@TempData["info"]' !== '') {
+                toastr.options.closeButton = true;
+                toastr.info('@TempData["info"]');
+            }
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)

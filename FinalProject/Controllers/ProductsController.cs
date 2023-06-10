@@ -16,14 +16,11 @@ namespace FinalProject.Controllers
     public class ProductsController : Controller
     {
         private readonly ProductService _productService;
-        private readonly FavoriteService _favoriteService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-
-        public ProductsController(ProductService productService, FavoriteService favoriteService, UserManager<ApplicationUser> userManager)
+        public ProductsController(ProductService productService, UserManager<ApplicationUser> userManager)
         {
             _productService = productService;
-            _favoriteService = favoriteService;
             _userManager = userManager;
         }
 
@@ -71,7 +68,7 @@ namespace FinalProject.Controllers
         {
             if (string.IsNullOrWhiteSpace(query))
             {
-                return Json(new List<Product>());
+                return Json(new List<ProductViewModel>());
             }
 
             var results =  await _productService.GetSearch(query);
@@ -101,7 +98,7 @@ namespace FinalProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Price,Description,Category,Image,Rating")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Title,Price,Description,Category,Image,Rating")] ProductViewModel product)
         {
             if (ModelState.IsValid)
             {
@@ -127,7 +124,7 @@ namespace FinalProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Price,Description,Category,Image,Rating")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Price,Description,Category,Image,Rating")] ProductViewModel product)
         {
             if (id != product.Id)
             {
@@ -143,13 +140,9 @@ namespace FinalProject.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!_productService.ProductExists(product.Id))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
