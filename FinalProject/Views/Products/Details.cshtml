@@ -5,14 +5,14 @@
 }
 
 @section Scripts {
-    @if (TempData["success"] != null)
+    @*@if (TempData["success"] != null)
     {
         <script>
             toastr.options.closeButton = true;
             toastr.options.closeEasing = 'swing';
             toastr.success('@TempData["success"]');
         </script>
-    }
+    }*@
 
     <script>
         $(function () {
@@ -29,17 +29,17 @@
 <div class="container">
     <div class="row border rounded px-5">
         <div class="col-md-3 text-md-start text-center py-5">
-            <img src="@Html.DisplayFor(model => model.Image)" class="img-fluid" alt="Product image" style="height: 250px; object-fit: scale-down;">
+            <img src="@Html.DisplayFor(model => model.Image)" class="img-fluid" alt="Product image" style="width: 250px; height: 250px; object-fit: contain;">
         </div>
         <div class="col-md-9 py-5">
-            <div>
+            <div class="ms-md-5">
                 <h2>@Html.DisplayFor(model => model.Title)</h2>
                 <p><strong>Category:</strong> @Html.DisplayFor(model => model.Category)</p>
                 <p><strong>Description:</strong> @Html.DisplayFor(model => model.Description)</p>
                 <p><strong>Price:</strong> @Html.DisplayFor(model => model.Price) TL</p>
                 <div id="rateYo" class="mb-4"></div>
             </div>
-            <div>
+            <div class="ms-md-5">
                 <a class="btn btn-outline-secondary" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model?.Id">Sepete Ekle <i class="fas fa-cart-plus ms-1"></i></a>
                 <a class="btn btn-outline-secondary" asp-controller="Cart" asp-action="Index">Sepete Git <i class="fas fa-cart-shopping ms-1"></i></a>
             </div>

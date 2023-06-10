@@ -21,7 +21,7 @@ namespace FinalProject.Service.Core
 
         public async Task<List<Product>> GetAll()
         {
-            return await _context.Products.ToListAsync(); ;
+            return await _context.Products.Include(p => p.Favorites).ToListAsync(); ;
         }
 
         public async Task<List<Product>> GetSearch(string query)

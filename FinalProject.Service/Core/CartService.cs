@@ -35,7 +35,7 @@ namespace FinalProject.Service.Core
             {
                 throw new ArgumentNullException(nameof(userId));
             }
-            var carts = await _context.Carts.Where(p => p.ApplicationUserId == userId).Include(c => c.Product).ToListAsync();
+            var carts = await _context.Carts.Where(p => p.ApplicationUserId == userId).Include(c => c.Product).Include(c => c.Product.Favorites).ToListAsync();
             return carts;
         }
 
@@ -76,10 +76,15 @@ namespace FinalProject.Service.Core
 
         public async Task DecreaseQuantityAsync(Cart cart)
         {
-            if (cart.Quantity > 1 )
+            if (cart.Quantity > 1)
             {
                 (cart.Quantity)--;
                 _context.Carts.Update(cart);
+                await _context.SaveChangesAsync();
+            }
+            else if (cart.Quantity == 1)
+            {
+                _context.Carts.Remove(cart);
                 await _context.SaveChangesAsync();
             }
         }

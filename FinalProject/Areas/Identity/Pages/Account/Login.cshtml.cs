@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
@@ -116,6 +116,7 @@ namespace FinalProject.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    TempData["success"] = "Giriş başarılı"; // Add this line
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -124,16 +125,17 @@ namespace FinalProject.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    _logger.LogWarning("Hesap zaptedildi!");
                     return RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    TempData["error"] = "Giriş Başarısız!";
+                    ModelState.AddModelError(string.Empty, "Giriş Başarısız!");
                     return Page();
                 }
             }
-
+            TempData["error"] = "Giriş Başarısız!";
             // If we got this far, something failed, redisplay form
             return Page();
         }

@@ -1,0 +1,35 @@
+﻿@model FinalProject.Service.Models.Favorite
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject SignInManager<FinalProject.Service.Models.ApplicationUser> SignInManager
+
+
+<div class="row mb-3 py-4">
+    <div class="col-md-5 d-flex justify-content-center" style="position: relative;">
+        <img src="@Model.Product.Image" alt="@Model.Product.Title" style="width: 300px; height: 300px; object-fit: contain;">
+        <form method="post" asp-action="ToggleFavorite" asp-route-productId="@Model.Product.Id" style="position: absolute; top: 10px; right: 30px;">
+            <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var isFavorite = Model.Product.Favorites.Any(f => f.ApplicationUserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    if (isFavorite)
+                    {
+                        <i class="fas fa-heart"></i>
+                    }
+                    else
+                    {
+                        <i class="far fa-heart"></i>
+                    }
+                }
+                else
+                {
+                    <i class="far fa-heart"></i>
+                }
+            </button>
+        </form>
+    </div>
+    <div class="col-md-7">
+        <h5 class="card-title">@Model.Product.Title</h5>
+        <p class="card-text">@Model.Product.Description</p>
+    </div>
+</div>

@@ -17,14 +17,16 @@ namespace FinalProject.Controllers
     public class CartController : Controller
     {
         private readonly CartService _cartService;
+        private readonly FavoriteService _favoriteService;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(CartService cartService, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public CartController(CartService cartService,FavoriteService favoriteService, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _cartService = cartService;
             _userManager = userManager;
             _roleManager = roleManager;
+            _favoriteService = favoriteService;
         }
         
         public async Task<IActionResult> Index()
@@ -70,6 +72,7 @@ namespace FinalProject.Controllers
             }
             return View();
         }
+
 
         [HttpGet]
         public async Task<IActionResult> AddToCart(int productId)
@@ -126,8 +129,13 @@ namespace FinalProject.Controllers
             {
                 return NotFound();
             }
-
-            await _cartService.IncreaseQuantityAsync(item);
+            if (item.Quantity == 10)
+            {
+                TempData["warning"] = "Ürün en fazla 10 adet olabilir!";
+            }else
+            {
+                await _cartService.IncreaseQuantityAsync(item);
+            }
             return RedirectToAction("Index");
         }
         [HttpGet]
@@ -138,8 +146,10 @@ namespace FinalProject.Controllers
             if (item == null)
             {
                 return NotFound();
+            } 
+            if (item.Quantity == 1) {
+                TempData["warning"] = "Ürün Sepetten Silindi!";
             }
-
             await _cartService.DecreaseQuantityAsync(item);
             return RedirectToAction("Index");
         }
@@ -153,6 +163,7 @@ namespace FinalProject.Controllers
             }
 
             await _cartService.RemoveItemAsync(item);
+            TempData["warning"] = "Ürün Sepetten Silindi!";
             return RedirectToAction("Index");
         }
     }

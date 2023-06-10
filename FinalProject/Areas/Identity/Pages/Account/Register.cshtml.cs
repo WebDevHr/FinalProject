@@ -137,6 +137,7 @@ namespace FinalProject.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    TempData["success"] = "Kayıt başarılı"; // Add this line
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

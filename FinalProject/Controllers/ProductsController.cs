@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Service.Models;
 using FinalProject.Service.Core;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+
 
 
 namespace FinalProject.Controllers
@@ -13,14 +16,15 @@ namespace FinalProject.Controllers
     public class ProductsController : Controller
     {
         private readonly ProductService _productService;
-        private readonly CartService _cartService;
+        private readonly FavoriteService _favoriteService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
 
-        public ProductsController(ProductService productService, CartService cartService)
+        public ProductsController(ProductService productService, FavoriteService favoriteService, UserManager<ApplicationUser> userManager)
         {
             _productService = productService;
-            _cartService = cartService;
-
+            _favoriteService = favoriteService;
+            _userManager = userManager;
         }
 
         // GET: Products
@@ -175,6 +179,5 @@ namespace FinalProject.Controllers
             await _productService.DeleteProduct(id);
             return RedirectToAction(nameof(Index));
         }
-
     }
 }

@@ -119,7 +119,7 @@ namespace FinalProject.Service.Migrations.ApplicationDb
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("FinalProject.Service.Models.Favorite", b =>
@@ -143,7 +143,7 @@ namespace FinalProject.Service.Migrations.ApplicationDb
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Favorites");
+                    b.ToTable("Favorites", (string)null);
                 });
 
             modelBuilder.Entity("FinalProject.Service.Models.Order", b =>
@@ -173,7 +173,7 @@ namespace FinalProject.Service.Migrations.ApplicationDb
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("FinalProject.Service.Models.Product", b =>
@@ -211,7 +211,7 @@ namespace FinalProject.Service.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -1,4 +1,11 @@
-﻿@model IEnumerable<FinalProject.Service.Models.Product>
+﻿@using Microsoft.AspNetCore.Http
+@model IEnumerable<FinalProject.Service.Models.Product>
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    int? isAdmin = HttpContextAccessor.HttpContext.Session.GetInt32("IsAdmin");
+}
 
 @{
     ViewData["Title"] = "Index";
@@ -6,6 +13,7 @@
 
 @using Microsoft.AspNetCore.Identity
 @using FinalProject.Service.Models
+@using System.Security.Claims
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -24,8 +32,28 @@
     {
     <div class="col-xl-3 col-lg-4 col-md-6 col-12">
         <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none; color: inherit;">
-                <div class="card m-2" style="height: 420px;">
-                    <img src="@Html.DisplayFor(modelItem => item.Image)" class="card-img-top p-3" alt="@Html.DisplayFor(modelItem => item.Title)" style="height: 250px; object-fit: scale-down;">
+            <div class="card m-2">
+                <img src="@Html.DisplayFor(modelItem => item.Image)" class="card-img-top p-3" alt="@Html.DisplayFor(modelItem => item.Title)" style="height: 250px; object-fit: scale-down;">
+                <form method="post" asp-controller="Favorites" asp-action="ToggleFavorite" asp-route-productId="@item.Id" style="position: absolute; top: 10px; right: 10px;">
+                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle">
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                var isFavorite = item.Favorites.Any(f => f.ApplicationUserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+                                if (isFavorite)
+                                {
+                                    <i class="fas fa-heart"></i>
+                                }
+                                else
+                                {
+                                    <i class="far fa-heart"></i>
+                                }
+                            }
+                            else
+                            {
+                                <i class="far fa-heart"></i>
+                            }
+                        </button>
+                    </form>
                 <div class="card-body">
                     <h6 class="card-title" style="height: 50px;">@Html.DisplayFor(modelItem => item.Title)</h6>
                     <div class="mb-2">
@@ -36,6 +64,10 @@
                         <div class="">
                             <p class="card-text"><strong>@Html.DisplayFor(modelItem => item.Price) TL</strong></p>
                         </div>
+                        @if (isAdmin.HasValue && isAdmin.Value == 1)
+                        {
+                            <a class="btn btn-outline-info" asp-asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        }
                     </div>
                 </div>
             </div>

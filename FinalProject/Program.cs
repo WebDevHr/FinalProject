@@ -51,6 +51,7 @@ internal class Program
         builder.Services.AddScoped<ProductService>();
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<CartService>();
+        builder.Services.AddScoped<FavoriteService>();
         // Replace the default UserClaimsPrincipalFactory with the custom one
 
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
